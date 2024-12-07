@@ -10,8 +10,18 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Leaderboard API!');
 });
 
+// Leaderboards
 let leaderboardeasy = [];
+let leaderboardmedium = [];
+let leaderboardhard = [];
 
+// Helper function to add an entry and sort leaderboard
+function addToLeaderboard(leaderboard, entry) {
+  leaderboard.push(entry);
+  leaderboard.sort((a, b) => b.score - a.score);
+}
+
+// Easy leaderboard
 app.get('/leaderboardeasy', (req, res) => {
   res.json(leaderboardeasy);
 });
@@ -19,16 +29,13 @@ app.get('/leaderboardeasy', (req, res) => {
 app.post('/leaderboardeasy', (req, res) => {
   const { difficulty, username, score, date } = req.body;
   if (!difficulty || !username || !score || !date) {
-    return res.status(400).json({ message: 'All fields (id, time, client) are required.' });
+    return res.status(400).json({ message: 'All fields (difficulty, username, score, date) are required.' });
   }
-  leaderboardeasy.push({ difficulty, username, score, date });
-  res.status(201).json({ message: 'Appointment created successfully!' });
+  addToLeaderboard(leaderboardeasy, { difficulty, username, score, date });
+  res.status(201).json({ message: 'Score added successfully!' });
 });
 
-
-
-let leaderboardmedium = [];
-
+// Medium leaderboard
 app.get('/leaderboardmedium', (req, res) => {
   res.json(leaderboardmedium);
 });
@@ -36,16 +43,13 @@ app.get('/leaderboardmedium', (req, res) => {
 app.post('/leaderboardmedium', (req, res) => {
   const { difficulty, username, score, date } = req.body;
   if (!difficulty || !username || !score || !date) {
-    return res.status(400).json({ message: 'All fields (id, time, client) are required.' });
+    return res.status(400).json({ message: 'All fields (difficulty, username, score, date) are required.' });
   }
-  leaderboardmedium.push({ difficulty, username, score, date });
-  res.status(201).json({ message: 'Appointment created successfully!' });
+  addToLeaderboard(leaderboardmedium, { difficulty, username, score, date });
+  res.status(201).json({ message: 'Score added successfully!' });
 });
 
-
-
-let leaderboardhard = [];
-
+// Hard leaderboard
 app.get('/leaderboardhard', (req, res) => {
   res.json(leaderboardhard);
 });
@@ -53,10 +57,10 @@ app.get('/leaderboardhard', (req, res) => {
 app.post('/leaderboardhard', (req, res) => {
   const { difficulty, username, score, date } = req.body;
   if (!difficulty || !username || !score || !date) {
-    return res.status(400).json({ message: 'All fields (id, time, client) are required.' });
+    return res.status(400).json({ message: 'All fields (difficulty, username, score, date) are required.' });
   }
-  leaderboardhard.push({ difficulty, username, score, date });
-  res.status(201).json({ message: 'Appointment created successfully!' });
+  addToLeaderboard(leaderboardhard, { difficulty, username, score, date });
+  res.status(201).json({ message: 'Score added successfully!' });
 });
 
 app.listen(PORT, () => {
