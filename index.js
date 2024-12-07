@@ -1,9 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors'); // Import the CORS middleware
 
 const app = express();
 const PORT = 3000;
 
+// Configure CORS options to allow requests from specific origins
+const corsOptions = {
+  origin: ['https://html-classic.itch.zone'], // Add itch.io domain
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+};
+
+app.use(cors(corsOptions)); // Enable CORS with the specified options
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
